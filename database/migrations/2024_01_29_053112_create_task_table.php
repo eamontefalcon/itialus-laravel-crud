@@ -16,8 +16,11 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('status');
+            $table->unsignedBigInteger('user_id'); // Foreign key for the user who is assigned the task
             $table->timestamps();
 
+            // Define foreign key relationship
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

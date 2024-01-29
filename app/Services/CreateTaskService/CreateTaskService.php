@@ -16,15 +16,13 @@ class CreateTaskService
 
     public function handle(CreateTaskInterface $createTask): Task
     {
-
-        $task =  $this->task->create([
+        return $this->task->create([
             'title' => $createTask->getTitle(),
             'description' => $createTask->getDescription(),
             'password' => $createTask->getDescription(),
             'status' => $createTask->getStatus(),
+            'user_id' => $createTask->getUserId()
         ]);
 
-        $task->users()->attach($createTask->getUserId());
-        return $task;
     }
 }

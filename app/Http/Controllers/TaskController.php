@@ -44,7 +44,13 @@ class TaskController extends Controller
     {
         $task = $this->createTaskService->handle($request);
 
-        return to_route('dashboard');
+        return to_route('dashboard', ['task' => [
+            'id' => $task->id,
+            'title' => $task->title,
+            'description' => $task->description,
+            'status' => $task->status,
+            'assigned_user_id' => $task->user_id,
+        ]]);
     }
 
     /**
@@ -74,16 +80,13 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $taskId)
+    public function destroy(string $taskId): JsonResponse
     {
         $task = Task::findOrFail($taskId);
-
-        // Detach all users associated with the task
-        $task->users()->detach();
 
         // Delete the task itself
         $task->delete();
 
-        return response()->json(['message' => 'Task and associated users deleted successfully']);
+        return response()->json(['message' => 'Task deleted successfully']);
     }
 }

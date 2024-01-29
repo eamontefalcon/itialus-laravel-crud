@@ -40,12 +40,23 @@ function submit() {
         onBefore: () => {
             form.clearErrors();
         },
-        onSuccess: () => {
+        onSuccess: (response) => {
+            const currentURL = window.location.href;
+
+            const params = new URLSearchParams(currentURL.split('?')[1]);
+
+            const taskId = params.get('task[id]');
+            const taskTitle = params.get('task[title]');
+            const taskDescription = params.get('task[description]');
+            const taskStatus = params.get('task[status]');
+            const taskAssignedUserId = params.get('task[assigned_user_id]');
+
             newTask({
-                title: form.title,
-                description: form.description,
-                status: form.status,
-                assigned_user_id: form.assigned_user_id,
+                id: taskId,
+                title: taskTitle,
+                description: taskDescription,
+                status: taskStatus,
+                assigned_user_id: taskAssignedUserId,
             });
             form.reset();
             form.clearErrors();
