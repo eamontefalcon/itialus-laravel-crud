@@ -29,7 +29,7 @@ class CreateTaskRequest extends FormRequest implements CreateTaskInterface
             'title' => 'required|string',
             'description' => 'nullable|string',
             'status' => 'required|in:'.Status::commaSeparated(),
-            'assigned_user_id' => 'required|exists:'.User::class.',id',
+            'user_id' => 'required|exists:'.User::class.',id',
         ];
     }
 
@@ -50,6 +50,6 @@ class CreateTaskRequest extends FormRequest implements CreateTaskInterface
 
     public function getUserId(): string
     {
-        return $this->input('assigned_user_id');
+        return $this->input('user_id');
     }
 }

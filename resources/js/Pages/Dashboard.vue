@@ -2,16 +2,31 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import TaskList from "@/Pages/Dashboard/Task/TaskList.vue";
-import TaskCreate from "@/Pages/Dashboard/Task/TaskCreate.vue";
+import TaskForm from "@/Pages/Dashboard/Task/TaskForm.vue";
 import { ref } from 'vue';
 
 
 const addTask = ref([]);
+const editTaskData = ref([]);
+const updateTaskData = ref([]);
 
 function newTask(data)
 {
     console.log(data);
     addTask.value = data;
+}
+
+function editTask(data)
+{
+    console.log(data);
+    editTaskData.value = data;
+}
+
+function updateTask(data)
+{
+    console.log(data);
+    editTaskData.value = []; //reset
+    updateTaskData.value = data;
 }
 
 </script>
@@ -28,10 +43,10 @@ function newTask(data)
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg px-3 py-3">
                     <div>
-                        <h1 class="font-bold">Create Task</h1>
+                        <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
-                    <TaskCreate @new-task="newTask"/>
-                    <TaskList class="mt-7" :add-task="addTask"/>
+                    <TaskForm @new-task="newTask" @update-task="updateTask" :edit-task="editTaskData"/>
+                    <TaskList class="mt-7" :add-task="addTask" :update-task="updateTaskData" @edit-task="editTask"/>
                 </div>
             </div>
         </div>

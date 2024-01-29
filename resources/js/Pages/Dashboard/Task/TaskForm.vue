@@ -6,19 +6,24 @@ import InputRequired from "@/Components/InputRequired.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from '@inertiajs/vue3';
 import { statusOptions} from "@/Enums/Status.js";
-import { reactive, defineEmits } from 'vue';
+import {reactive, defineEmits, defineProps, watch} from 'vue';
 
-const emits = defineEmits(['new-task']);
+const emits = defineEmits(['new-task', 'update-task']);
+const props = defineProps(['editTask']);
 
 const newTask = (task) => {
     emits('new-task', task);
+};
+
+const updateTask = (task) => {
+    emits('update-task', task);
 };
 
 const form = useForm('task', {
     title: '',
     description: '',
     status: '',
-    assigned_user_id: '',
+    user_id: '',
 });
 
 const users = reactive([]);
@@ -35,7 +40,47 @@ axios.get('users')
 
 function submit() {
 
-    form.post('/tasks', {
+    let url = `/tasks`;
+
+    if (form.id) {
+        url = `/tasks/${form.id}`;
+
+        form.put(url, {
+            preserveScroll: true,
+            onBefore: () => {
+                form.clearErrors();
+            },
+            onSuccess: (response) => {
+                const currentURL = window.location.href;
+
+                const params = new URLSearchParams(currentURL.split('?')[1]);
+
+                const taskId = parseInt(params.get('task[id]'));
+                const taskTitle = params.get('task[title]');
+                const taskDescription = params.get('task[description]');
+                const taskStatus = params.get('task[status]');
+                const taskAssignedUserId = parseInt(params.get('task[user_id]'));
+
+                updateTask({
+                    id: taskId,
+                    title: taskTitle,
+                    description: taskDescription,
+                    status: taskStatus,
+                    user_id: taskAssignedUserId,
+                });
+
+
+                form.id = '';
+                form.reset();
+                form.clearErrors();
+            }
+        })
+
+
+        return;
+    }
+
+    form.post(url, {
         preserveScroll: true,
         onBefore: () => {
             form.clearErrors();
@@ -45,18 +90,18 @@ function submit() {
 
             const params = new URLSearchParams(currentURL.split('?')[1]);
 
-            const taskId = params.get('task[id]');
+            const taskId = parseInt(params.get('task[id]'));
             const taskTitle = params.get('task[title]');
             const taskDescription = params.get('task[description]');
             const taskStatus = params.get('task[status]');
-            const taskAssignedUserId = params.get('task[assigned_user_id]');
+            const taskAssignedUserId = parseInt(params.get('task[user_id]'));
 
             newTask({
                 id: taskId,
                 title: taskTitle,
                 description: taskDescription,
                 status: taskStatus,
-                assigned_user_id: taskAssignedUserId,
+                user_id: taskAssignedUserId,
             });
             form.reset();
             form.clearErrors();
@@ -64,6 +109,16 @@ function submit() {
     })
 
 }
+
+watch(() => (props.editTask), (newTask, oldTask) => {
+
+    form.id = newTask.id ?? '';
+    form.title = newTask.title ?? '';
+    form.description = newTask.description ?? '';
+    form.status = newTask.status ?? null;
+    form.user_id = newTask.user_id ?? '';
+});
+
 
 </script>
 
@@ -91,7 +146,7 @@ function submit() {
                 <InputLabel for="status">
                     Status
                 </InputLabel>
-                <select v-model="form.status">
+                <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" v-model="form.status">
                     <option v-for="status in statusOptions" :value="status.label">{{status.label}}</option>
                 </select>
                 <InputError :message="form.errors.status" />
@@ -100,12 +155,15 @@ function submit() {
                 <InputLabel for="assigned_user">
                     Assigned User
                 </InputLabel>
-                <select v-model="form.assigned_user_id">
-                    <option v-for="user in users" :value="user.id">{{user.name}}</option>
+                <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" v-model="form.user_id">
+                    <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
                 </select>
-                <InputError :message="form.errors.assigned_user_id" />
+                <InputError :message="form.errors.user_id" />
             </div>
         </div>
-        <button type="submit">Submit</button>
+        <div class="flex justify-end mt-5">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
+        </div>
+
     </form>
 </template>
