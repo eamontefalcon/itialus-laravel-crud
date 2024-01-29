@@ -1,6 +1,9 @@
 <script setup>
 
-import { reactive } from 'vue';
+import { reactive, defineProps, watch } from 'vue';
+
+const props = defineProps(['addTask']);
+
 
 const tasks = reactive([]);
 
@@ -27,6 +30,10 @@ function deleteTask(taskId)
     });
 
 }
+
+watch(() => props.addTask, (newAddTask) => {
+    tasks.push(newAddTask);
+});
 
 </script>
 

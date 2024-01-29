@@ -40,13 +40,11 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateTaskRequest $request): Response
+    public function store(CreateTaskRequest $request)
     {
         $task = $this->createTaskService->handle($request);
 
-        return Inertia::render('Dashboard', [
-           'task' => $task
-        ]);
+        return to_route('dashboard');
     }
 
     /**

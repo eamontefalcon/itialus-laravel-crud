@@ -6,8 +6,13 @@ import InputRequired from "@/Components/InputRequired.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from '@inertiajs/vue3';
 import { statusOptions} from "@/Enums/Status.js";
-import { reactive } from 'vue';
+import { reactive, defineEmits } from 'vue';
 
+const emits = defineEmits(['new-task']);
+
+const newTask = (task) => {
+    emits('new-task', task);
+};
 
 const form = useForm('task', {
     title: '',
@@ -36,6 +41,12 @@ function submit() {
             form.clearErrors();
         },
         onSuccess: () => {
+            newTask({
+                title: form.title,
+                description: form.description,
+                status: form.status,
+                assigned_user_id: form.assigned_user_id,
+            });
             form.reset();
             form.clearErrors();
         }

@@ -3,6 +3,17 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import TaskList from "@/Pages/Dashboard/Task/TaskList.vue";
 import TaskCreate from "@/Pages/Dashboard/Task/TaskCreate.vue";
+import { ref } from 'vue';
+
+
+const addTask = ref([]);
+
+function newTask(data)
+{
+    console.log(data);
+    addTask.value = data;
+}
+
 </script>
 
 <template>
@@ -19,8 +30,8 @@ import TaskCreate from "@/Pages/Dashboard/Task/TaskCreate.vue";
                     <div>
                         <h1 class="font-bold">Create Task</h1>
                     </div>
-                    <TaskCreate/>
-                    <TaskList class="mt-7"/>
+                    <TaskCreate @new-task="newTask"/>
+                    <TaskList class="mt-7" :add-task="addTask"/>
                 </div>
             </div>
         </div>
