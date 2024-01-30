@@ -8,12 +8,8 @@ import { useForm } from '@inertiajs/vue3';
 import { statusOptions} from "@/Enums/Status.js";
 import {reactive, defineEmits, defineProps, watch} from 'vue';
 
-const emits = defineEmits(['new-task', 'update-task']);
+const emits = defineEmits(['update-task']);
 const props = defineProps(['editTask']);
-
-const newTask = (task) => {
-    emits('new-task', task);
-};
 
 const updateTask = (task) => {
     emits('update-task', task);
@@ -85,23 +81,6 @@ function submit() {
             form.clearErrors();
         },
         onSuccess: (response) => {
-            const currentURL = window.location.href;
-
-            const params = new URLSearchParams(currentURL.split('?')[1]);
-
-            const taskId = parseInt(params.get('task[id]'));
-            const taskTitle = params.get('task[title]');
-            const taskDescription = params.get('task[description]');
-            const taskStatus = params.get('task[status]');
-            const taskAssignedUserId = parseInt(params.get('task[user_id]'));
-
-            newTask({
-                id: taskId,
-                title: taskTitle,
-                description: taskDescription,
-                status: taskStatus,
-                user_id: taskAssignedUserId,
-            });
             form.reset();
             form.clearErrors();
         }

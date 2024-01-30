@@ -1,8 +1,8 @@
 <script setup>
 
-import {reactive, defineProps, watch, ref, defineEmits} from 'vue';
+import {defineProps, watch, ref, defineEmits} from 'vue';
 
-const props = defineProps(['addTask', 'updateTask', 'tasks']);
+const props = defineProps(['tasks']);
 const emits = defineEmits(['editTask']);
 
 const tasks = ref(props.tasks);
@@ -24,33 +24,10 @@ function deleteTask(taskId)
     });
 
 }
-
-const updateTaskById = (taskId, updatedTask) => {
-    const taskIndex = tasks.value.findIndex(task => task.id === parseInt(taskId));
-
-    if (taskIndex !== -1) {
-        // Update the task using Vue.set to ensure reactivity
-        Object.keys(updatedTask).forEach(key => {
-            // Assuming updatedTask contains only the properties you want to update
-            tasks[taskIndex][key] = updatedTask[key];
-        });
-    } else {
-        console.error(`Task with ID ${taskId} not found.`);
-    }
-};
-
 function editTask(task)
 {
     editTaskData(task);
 }
-
-watch(() => props.addTask, (newAddTask) => {
-    tasks.value.push(newAddTask);
-});
-
-watch(() => props.updateTask, (updateTask) => {
-    updateTaskById(updateTask.id, updateTask);
-});
 
 watch(() => props.tasks, (newTasks) => {
     tasks.value = newTasks;
