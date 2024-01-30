@@ -7,10 +7,21 @@ import {reactive, ref, watch} from 'vue';
 import Pagination from "@/Components/Pagination.vue";
 import TaskSearch from "@/Pages/Dashboard/Task/TaskSearch.vue";
 
-const props = defineProps({ tasks: Object });
+/** data from the dashboard controller **/
+const props = defineProps({
+    tasks: {
+        type: [Object],
+        required: true,
+    },
+    users: {
+        type: [Object],
+        required: true,
+    },
+});
 
 const tasks = reactive(props.tasks);
 const editTaskData = ref([]);
+const users = props.users;
 
 function editTask(data)
 {
@@ -24,13 +35,13 @@ watch(() => props.tasks, (newTasks) => {
     });
 });
 
-
 </script>
 
 <template>
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
+
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Task Management</h2>
         </template>
@@ -41,7 +52,7 @@ watch(() => props.tasks, (newTasks) => {
                     <div>
                         <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
-                    <TaskForm :edit-task="editTaskData"/>
+                    <TaskForm :users="users" :edit-task="editTaskData"/>
 
                     <div v-if="tasks.data.length === 0 && tasks.links.length === 0">
                         Loading...
@@ -58,5 +69,6 @@ watch(() => props.tasks, (newTasks) => {
                 </div>
             </div>
         </div>
+
     </AuthenticatedLayout>
 </template>

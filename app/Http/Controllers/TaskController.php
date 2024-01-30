@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Services\CreateTaskService\CreateTaskService;
 use App\Services\UpdateTaskService\UpdateTaskService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -70,7 +71,7 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, string $taskId)
+    public function update(UpdateTaskRequest $request, string $taskId): RedirectResponse
     {
         $task = Task::findOrFail($taskId);
 
@@ -90,13 +91,13 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $taskId): JsonResponse
+    public function destroy(string $taskId): RedirectResponse
     {
         $task = Task::findOrFail($taskId);
 
         // Delete the task itself
         $task->delete();
 
-        return response()->json(['message' => 'Task deleted successfully']);
+        return to_route('dashboard');
     }
 }

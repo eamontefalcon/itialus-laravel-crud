@@ -6,10 +6,10 @@ import InputRequired from "@/Components/InputRequired.vue";
 import TextInput from "@/Components/TextInput.vue";
 import { useForm } from '@inertiajs/vue3';
 import { statusOptions} from "@/Enums/Status.js";
-import {reactive, defineEmits, defineProps, watch} from 'vue';
+import {defineEmits, defineProps, watch} from 'vue';
 
 const emits = defineEmits(['update-task']);
-const props = defineProps(['editTask']);
+const props = defineProps(['editTask', 'users']);
 
 const updateTask = (task) => {
     emits('update-task', task);
@@ -22,16 +22,7 @@ const form = useForm('task', {
     user_id: '',
 });
 
-const users = reactive([]);
-
-//TODO make this reusable later
-axios.get('users')
-    .then(async response => {
-        users.push(...response.data.users);
-    }).catch(error => {
-    console.error('Error fetching user data:', error);
-});
-
+const users = props.users;
 
 function submit() {
 
@@ -88,8 +79,7 @@ function submit() {
 
 }
 
-watch(() => (props.editTask), (newTask, oldTask) => {
-
+watch(() => (props.editTask), (newTask) => {
     form.id = newTask.id ?? '';
     form.title = newTask.title ?? '';
     form.description = newTask.description ?? '';

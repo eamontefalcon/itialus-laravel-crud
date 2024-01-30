@@ -1,6 +1,7 @@
 <script setup>
 
 import {defineProps, watch, ref, defineEmits} from 'vue';
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps(['tasks']);
 const emits = defineEmits(['editTask']);
@@ -13,16 +14,7 @@ const editTaskData = (task) => {
 
 function deleteTask(taskId)
 {
-    axios.delete(`tasks/${taskId}`)
-        .then(response => {
-            const index = tasks.value.findIndex(task => task.id === parseInt(taskId));
-            if (index !== -1) {
-                tasks.value.splice(index, 1);
-            }
-        }).catch(error => {
-        console.error(error);
-    });
-
+    router.delete(`tasks/${taskId}`);
 }
 function editTask(task)
 {
@@ -32,7 +24,6 @@ function editTask(task)
 watch(() => props.tasks, (newTasks) => {
     tasks.value = newTasks;
 });
-
 
 </script>
 
