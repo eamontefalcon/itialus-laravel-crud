@@ -30,15 +30,7 @@ class TaskController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json(['tasks' => Task::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(['tasks' => Task::paginate(5)->withQueryString()]);
     }
 
     /**
@@ -57,13 +49,6 @@ class TaskController extends Controller
         ]]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

@@ -3,31 +3,39 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import TaskList from "@/Pages/Dashboard/Task/TaskList.vue";
 import TaskForm from "@/Pages/Dashboard/Task/TaskForm.vue";
-import { ref } from 'vue';
+import {reactive, ref, watch} from 'vue';
+import Pagination from "@/Components/Pagination.vue";
 
+const props = defineProps({ tasks: Object });
 
+const tasks = reactive(props.tasks);
 const addTask = ref([]);
 const editTaskData = ref([]);
 const updateTaskData = ref([]);
 
 function newTask(data)
 {
-    console.log(data);
-    addTask.value = data;
+    tasks.value = tasks.data.push(data);
 }
 
 function editTask(data)
 {
-    console.log(data);
     editTaskData.value = data;
 }
 
 function updateTask(data)
 {
-    console.log(data);
     editTaskData.value = []; //reset
     updateTaskData.value = data;
 }
+
+watch(() => props.tasks, (newTasks) => {
+    // Update each property individually to trigger reactivity
+    Object.keys(newTasks).forEach(key => {
+        tasks[key] = newTasks[key];
+    });
+});
+
 
 </script>
 
@@ -46,7 +54,18 @@ function updateTask(data)
                         <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
                     <TaskForm @new-task="newTask" @update-task="updateTask" :edit-task="editTaskData"/>
-                    <TaskList class="mt-7" :add-task="addTask" :update-task="updateTaskData" @edit-task="editTask"/>
+
+                    <div v-if="tasks.data.length === 0 && tasks.links.length === 0">
+                        Loading...
+                    </div>
+                    <div v-else>
+                        <div class="mt-5">
+                            <TaskList :tasks="tasks.data" :update-task="updateTaskData" @edit-task="editTask"/>
+                        </div>
+                        <div class="mt-7">
+                            <Pagination :links="tasks.links" :meta="tasks"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

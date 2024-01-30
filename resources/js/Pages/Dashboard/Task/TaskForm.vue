@@ -31,7 +31,6 @@ const users = reactive([]);
 //TODO make this reusable later
 axios.get('users')
     .then(async response => {
-        console.log(users);
         users.push(...response.data.users);
     }).catch(error => {
     console.error('Error fetching user data:', error);

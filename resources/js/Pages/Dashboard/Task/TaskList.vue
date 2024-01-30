@@ -1,34 +1,23 @@
 <script setup>
 
-import {reactive, defineProps, watch, computed, defineEmits} from 'vue';
+import {reactive, defineProps, watch, ref, defineEmits} from 'vue';
 
-const props = defineProps(['addTask', 'updateTask']);
+const props = defineProps(['addTask', 'updateTask', 'tasks']);
 const emits = defineEmits(['editTask']);
 
-const tasks = reactive([]);
+const tasks = ref(props.tasks);
 
 const editTaskData = (task) => {
     emits('editTask', task);
 };
 
-
-//TODO make this reusable later
-axios.get('tasks')
-    .then(async response => {
-        console.log(tasks);
-        tasks.push(...response.data.tasks);
-    }).catch(error => {
-    console.error('Error fetching task data:', error);
-});
-
-
 function deleteTask(taskId)
 {
     axios.delete(`tasks/${taskId}`)
         .then(response => {
-            const index = tasks.findIndex(task => task.id === parseInt(taskId));
+            const index = tasks.value.findIndex(task => task.id === parseInt(taskId));
             if (index !== -1) {
-                tasks.splice(index, 1);
+                tasks.value.splice(index, 1);
             }
         }).catch(error => {
         console.error(error);
@@ -37,11 +26,8 @@ function deleteTask(taskId)
 }
 
 const updateTaskById = (taskId, updatedTask) => {
-    console.log(tasks);
-    console.log( parseInt(taskId));
-    const taskIndex = tasks.findIndex(task => task.id === parseInt(taskId));
+    const taskIndex = tasks.value.findIndex(task => task.id === parseInt(taskId));
 
-    console.log(updatedTask);
     if (taskIndex !== -1) {
         // Update the task using Vue.set to ensure reactivity
         Object.keys(updatedTask).forEach(key => {
@@ -55,18 +41,21 @@ const updateTaskById = (taskId, updatedTask) => {
 
 function editTask(task)
 {
-    console.log(task);
     editTaskData(task);
 }
 
 watch(() => props.addTask, (newAddTask) => {
-    tasks.push(newAddTask);
+    tasks.value.push(newAddTask);
 });
 
 watch(() => props.updateTask, (updateTask) => {
-    console.log(updateTask);
     updateTaskById(updateTask.id, updateTask);
 });
+
+watch(() => props.tasks, (newTasks) => {
+    tasks.value = newTasks;
+});
+
 
 </script>
 
@@ -99,5 +88,7 @@ watch(() => props.updateTask, (updateTask) => {
             </tbody>
         </table>
     </div>
+
+
 
 </template>
