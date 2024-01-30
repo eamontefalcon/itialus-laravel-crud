@@ -113,6 +113,7 @@ watch(() => (props.editTask), (newTask) => {
             <div>
                 <InputLabel for="status">
                     Status
+                    <InputRequired />
                 </InputLabel>
                 <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" v-model="form.status">
                     <option v-for="status in statusOptions" :value="status.label">{{status.label}}</option>
@@ -122,6 +123,7 @@ watch(() => (props.editTask), (newTask) => {
             <div>
                 <InputLabel for="assigned_user">
                     Assigned User
+                    <InputRequired />
                 </InputLabel>
                 <select class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" v-model="form.user_id">
                     <option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</option>
