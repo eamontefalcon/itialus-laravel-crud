@@ -61,9 +61,11 @@ watch(() => props.tasks, (newTasks) => {
                     </div>
                 </td>
             </tr>
-            <!-- Add more rows as needed -->
             </tbody>
         </table>
+        <div class="flex justify-center mt-5 mb-5" v-if="!tasks.length">
+            <p>No Data</p>
+        </div>
     </div>
 
 

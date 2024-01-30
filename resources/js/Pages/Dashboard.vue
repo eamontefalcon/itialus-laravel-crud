@@ -5,6 +5,7 @@ import TaskList from "@/Pages/Dashboard/Task/TaskList.vue";
 import TaskForm from "@/Pages/Dashboard/Task/TaskForm.vue";
 import {reactive, ref, watch} from 'vue';
 import Pagination from "@/Components/Pagination.vue";
+import TaskSearch from "@/Pages/Dashboard/Task/TaskSearch.vue";
 
 const props = defineProps({ tasks: Object });
 
@@ -47,6 +48,7 @@ watch(() => props.tasks, (newTasks) => {
                     </div>
                     <div v-else>
                         <div class="mt-5">
+                            <TaskSearch/>
                             <TaskList :tasks="tasks.data" @edit-task="editTask"/>
                         </div>
                         <div class="mt-7">
