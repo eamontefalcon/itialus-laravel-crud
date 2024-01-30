@@ -6,6 +6,7 @@ use App\Models\Task;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -18,12 +19,14 @@ class DashboardController extends Controller
                 $query->orWhere('status', 'LIKE', '%' . $search . '%');
                 return $query;
             })
-
             ->paginate(5)
             ->withQueryString($request->query());
 
+        $users= User::all();
+
         return Inertia::render('Dashboard', [
             'tasks' => $tasks,
+            'users' => $users,
         ]);
     }
 }
