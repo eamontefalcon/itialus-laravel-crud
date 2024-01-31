@@ -35,12 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
-    Route::get('/users', [UserController::class, 'index'])->name('user.index');
-
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.index');
     Route::post('/tasks', [TaskController::class, 'store'])->name('tasks.store');
-    Route::get('/tasks/{taskId}', [TaskController::class, 'store'])->name('tasks.edit');
     Route::put('/tasks/{taskId}', [TaskController::class, 'update'])->name('tasks.update');
     Route::delete('/tasks/{taskId}', [TaskController::class, 'destroy'])->name('tasks.destroy');
 

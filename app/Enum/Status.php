@@ -6,7 +6,6 @@ enum Status
 {
 
     use EnumRenderer;
-
     case DRAFT;
     case PENDING;
     case COMPLETED;

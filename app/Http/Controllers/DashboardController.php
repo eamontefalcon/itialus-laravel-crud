@@ -13,7 +13,7 @@ class DashboardController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->input('search');
-        $tasks = Task::latest('created_at')
+        $tasks = Task::latest('updated_at')
             ->when($request->filled('search'), function ($query) use ($search) {
                 $query->where('title', 'LIKE', '%' . $search . '%');
                 $query->orWhere('status', 'LIKE', '%' . $search . '%');
@@ -22,7 +22,7 @@ class DashboardController extends Controller
             ->paginate(5)
             ->withQueryString($request->query());
 
-        $users= User::all();
+        $users = User::all();
 
         return Inertia::render('Dashboard', [
             'tasks' => $tasks,

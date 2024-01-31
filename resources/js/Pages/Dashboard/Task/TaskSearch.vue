@@ -27,7 +27,7 @@ function performSearch() {
 
             id="description"
             type="text"
-            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full mt-3 mb-3"
+            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-3 mb-3"
             v-model="search"
             placeholder="Search"
         />

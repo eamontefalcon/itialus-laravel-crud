@@ -7,9 +7,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use App\Services\CreateTaskService\CreateTaskService;
 use App\Services\UpdateTaskService\UpdateTaskService;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -27,45 +25,13 @@ class TaskController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     */
-    public function index(): JsonResponse
-    {
-        return response()->json(['tasks' => Task::paginate(5)->withQueryString()]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateTaskRequest $request)
+    public function store(CreateTaskRequest $request): RedirectResponse
     {
-        $task = $this->createTaskService->handle($request);
+        $this->createTaskService->handle($request);
 
-        return to_route('dashboard', ['task' => [
-            'id' => $task->id,
-            'title' => $task->title,
-            'description' => $task->description,
-            'status' => $task->status,
-            'user_id' => $task->user_id,
-        ]]);
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $taskId)
-    {
-
-        $task = Task::findOrFail($taskId);
-
-        return to_route('dashboard', ['task' => [
-            'id' => $task->id,
-            'title' => $task->title,
-            'description' => $task->description,
-            'status' => $task->status,
-            'user_id' => $task->user_id,
-        ]]);
+        return to_route('dashboard');
     }
 
     /**
@@ -77,15 +43,7 @@ class TaskController extends Controller
 
         $this->updateTaskService->handle($request, $task);
 
-        $latestTask = Task::find($taskId);
-
-        return to_route('dashboard', ['task' => [
-            'id' => $latestTask->id,
-            'title' => $latestTask->title,
-            'description' => $latestTask->description,
-            'status' => $latestTask->status,
-            'user_id' => $latestTask->user_id,
-        ]]);
+        return to_route('dashboard');
     }
 
     /**
@@ -95,7 +53,6 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($taskId);
 
-        // Delete the task itself
         $task->delete();
 
         return to_route('dashboard');
