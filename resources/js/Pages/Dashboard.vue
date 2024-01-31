@@ -52,12 +52,10 @@ watch(() => props.tasks, (newTasks) => {
                     <div>
                         <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
+
                     <TaskForm :users="users" :edit-task="editTaskData"/>
 
-                    <div v-if="tasks.data.length === 0 && tasks.links.length === 0">
-                        Loading...
-                    </div>
-                    <div v-else>
+                    <div>
                         <div class="mt-5">
                             <TaskSearch/>
                             <TaskList :tasks="tasks.data" @edit-task="editTask"/>
@@ -71,4 +69,5 @@ watch(() => props.tasks, (newTasks) => {
         </div>
 
     </AuthenticatedLayout>
+
 </template>

@@ -19,8 +19,7 @@ class DashboardController extends Controller
                 $query->orWhere('status', 'LIKE', '%' . $search . '%');
                 return $query;
             })
-            ->paginate(5)
-            ->withQueryString($request->query());
+            ->paginate(5);
 
         $users = User::all();
 

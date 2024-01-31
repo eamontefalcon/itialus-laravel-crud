@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+    /** table default css **/
+    .table-head-default {
+        @apply px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase;
+    }
+    .table-td-default {
+        @apply px-6 py-4 border-b border-gray-200;
+    }
+
+    /** buttons css **/
+    .btn-primary {
+        @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+    }
+}

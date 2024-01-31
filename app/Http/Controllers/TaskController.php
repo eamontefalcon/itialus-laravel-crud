@@ -52,7 +52,6 @@ class TaskController extends Controller
     public function destroy(string $taskId): RedirectResponse
     {
         $task = Task::findOrFail($taskId);
-
         $task->delete();
 
         return to_route('dashboard');

@@ -7,6 +7,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { useForm } from '@inertiajs/vue3';
 import { statusOptions} from "@/Enums/Status.js";
 import {defineEmits, defineProps, watch} from 'vue';
+import Swal from 'sweetalert2';
 
 const emits = defineEmits(['update-task']);
 const props = defineProps(['editTask', 'users']);
@@ -37,6 +38,13 @@ function submit() {
                 form.clearErrors();
             },
             onSuccess: (response) => {
+
+                Swal.fire({
+                    title: "Task",
+                    text: "Task Successfully Updated!",
+                    icon: "success"
+                });
+
                 const currentURL = window.location.href;
 
                 const params = new URLSearchParams(currentURL.split('?')[1]);
@@ -72,6 +80,13 @@ function submit() {
             form.clearErrors();
         },
         onSuccess: (response) => {
+
+            Swal.fire({
+                title: "Task",
+                text: "Task Successfully Created!",
+                icon: "success"
+            });
+
             form.reset();
             form.clearErrors();
         }
@@ -132,7 +147,7 @@ watch(() => (props.editTask), (newTask) => {
             </div>
         </div>
         <div class="flex justify-end mt-5">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Submit</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" :disabled="form.processing">Submit</button>
         </div>
 
     </form>
