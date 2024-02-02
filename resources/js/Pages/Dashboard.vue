@@ -65,7 +65,6 @@ router.on('exception', (event) => {
                         <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
 
-
                     <TaskForm :users="users" :edit-task="editTaskData"/>
 
                     <div>

@@ -28,6 +28,7 @@ async function deleteTask(taskId) {
         },
         onFinish: (response) => {
             deleteIsDisabled.value = false;
+            emits('editTask', []);
         },
     });
 

@@ -24,7 +24,6 @@ function performSearch() {
 <template>
     <div>
         <TextInput
-
             id="description"
             type="text"
             class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block w-full mt-3 mb-3"
