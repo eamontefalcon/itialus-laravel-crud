@@ -6,6 +6,8 @@ import TaskForm from "@/Pages/Dashboard/Task/TaskForm.vue";
 import {reactive, ref, watch} from 'vue';
 import Pagination from "@/Components/Pagination.vue";
 import TaskSearch from "@/Pages/Dashboard/Task/TaskSearch.vue";
+import { router } from '@inertiajs/vue3';
+import Swal from 'sweetalert2';
 
 /** data from the dashboard controller **/
 const props = defineProps({
@@ -35,6 +37,16 @@ watch(() => props.tasks, (newTasks) => {
     });
 });
 
+//this code is to show the error example is network issue or error connection this will show the error message
+router.on('exception', (event) => {
+    console.log(event);
+    Swal.fire({
+        title: "Something went wrong",
+        text: event.detail.exception.message,
+        icon: "error"
+    });
+})
+
 </script>
 
 <template>
@@ -52,6 +64,7 @@ watch(() => props.tasks, (newTasks) => {
                     <div>
                         <h1 class="font-bold">Task Form (Edit/Create)</h1>
                     </div>
+
 
                     <TaskForm :users="users" :edit-task="editTaskData"/>
 

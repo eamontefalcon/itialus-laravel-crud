@@ -15,22 +15,22 @@ const editTaskData = (task) => {
     emits('editTask', task);
 };
 
-function deleteTask(taskId)
-{
+async function deleteTask(taskId) {
     deleteIsDisabled.value = true;
 
     router.delete(`tasks/${taskId}`, {
-        onSuccess: page => {
+        onSuccess: (page) => {
             Swal.fire({
                 title: "Task",
                 text: "Task Successfully Deleted!",
                 icon: "success"
             });
         },
-        onFinish: (visit, response) => {
+        onFinish: (response) => {
             deleteIsDisabled.value = false;
         },
     });
+
 }
 function editTask(task)
 {
