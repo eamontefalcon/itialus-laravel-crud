@@ -14,12 +14,13 @@ class DashboardController extends Controller
     {
         $search = $request->input('search');
         $tasks = Task::latest('updated_at')
+            ->with(['user' => fn ($query) => $query->select('id', 'name')])
             ->when($request->filled('search'), function ($query) use ($search) {
-                $query->where('title', 'LIKE', '%' . $search . '%');
-                $query->orWhere('status', 'LIKE', '%' . $search . '%');
-                return $query;
-            })
-            ->paginate(5);
+            $query->where('title', 'LIKE', '%' . $search . '%');
+            $query->orWhere('status', 'LIKE', '%' . $search . '%');
+            return $query;
+        })
+        ->paginate(5);
 
         $users = User::all();
 

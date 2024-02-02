@@ -52,6 +52,7 @@ watch(() => props.tasks, (newTasks) => {
                 <th class="table-head-default">ID</th>
                 <th class="table-head-default">Title</th>
                 <th class="table-head-default">Description</th>
+                <th class="table-head-default">Assigned User</th>
                 <th class="table-head-default">Status</th>
                 <th class="table-head-default">Action</th>
             </tr>
@@ -61,6 +62,7 @@ watch(() => props.tasks, (newTasks) => {
                 <td class="table-td-default">{{task.id}}</td>
                 <td class="table-td-default">{{task.title}}</td>
                 <td class="table-td-default">{{task.description}}</td>
+                <td class="table-td-default">{{task.user.name}}</td>
                 <td class="table-td-default">{{task.status}}</td>
                 <td class="table-td-default">
                     <div class="flex gap-2">
