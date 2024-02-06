@@ -17,7 +17,7 @@ watch(search, debouncedSearch);
 
 function performSearch() {
     // Your search logic goes here
-    router.get('/dashboard', { search: search.value }, { preserveState: true })
+    router.get('/dashboard', { sort: {column:'id', direction:'asc'} }, { preserveState: true })
 }
 </script>
 

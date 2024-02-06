@@ -2,30 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Search\SearchRequest;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request): Response
+
+    public function index(SearchRequest $request): Response
     {
-        $search = $request->input('search');
-        $tasks = Task::latest('updated_at')
-            ->with(['user' => fn ($query) => $query->select('id', 'name')])
-            ->when($request->filled('search'), function ($query) use ($search) {
-            $query->where('title', 'LIKE', '%' . $search . '%');
-            $query->orWhere('status', 'LIKE', '%' . $search . '%');
-            return $query;
-        })
-        ->paginate(5);
+
+        $tasks = Task::select('tasks.id', 'tasks.title', 'tasks.description', 'tasks.status', 'u.id as user_id', 'u.name')
+            ->join('users as u', 'tasks.user_id', '=', 'u.id')
+            ->sort($request->getColumn(), $request->getDirection())
+            ->filter($request->getSearchValue())
+            ->paginate($request->getPage() ?? 5);
 
         $users = User::all();
 
         return Inertia::render('Dashboard', [
-            'tasks' => $tasks,
+            'tasks' =>  $tasks,
             'users' => $users,
         ]);
     }

@@ -5,7 +5,6 @@ import TaskList from "@/Pages/Dashboard/Task/TaskList.vue";
 import TaskForm from "@/Pages/Dashboard/Task/TaskForm.vue";
 import {reactive, ref, watch} from 'vue';
 import Pagination from "@/Components/Pagination.vue";
-import TaskSearch from "@/Pages/Dashboard/Task/TaskSearch.vue";
 import { router } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 
@@ -69,10 +68,9 @@ router.on('exception', (event) => {
 
                     <div>
                         <div class="mt-5">
-                            <TaskSearch/>
                             <TaskList :tasks="tasks.data" @edit-task="editTask"/>
                         </div>
-                        <div class="mt-7">
+                        <div class="mt-7" v-if="tasks.next_page_url || tasks.prev_page_url">
                             <Pagination :links="tasks.links" :meta="tasks"/>
                         </div>
                     </div>
