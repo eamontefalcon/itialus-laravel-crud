@@ -23,7 +23,7 @@ class DashboardController extends Controller
         $users = User::all();
 
         return Inertia::render('Dashboard', [
-            'tasks' =>  $tasks,
+            'tasks' => $tasks,
             'users' => $users,
         ]);
     }

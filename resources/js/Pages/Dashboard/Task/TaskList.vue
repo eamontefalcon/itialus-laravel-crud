@@ -1,6 +1,6 @@
 <script setup>
 
-import {defineProps, watch, ref, defineEmits, computed, capitalize} from 'vue';
+import {defineProps, watch, ref, defineEmits} from 'vue';
 import { router } from '@inertiajs/vue3';
 import Swal from 'sweetalert2';
 import {debounce} from "lodash";
